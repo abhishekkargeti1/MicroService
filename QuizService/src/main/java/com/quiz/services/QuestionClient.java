@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@FeignClient(url="http://localHost:8080" ,value = "Question-Client")
+//@FeignClient(url="http://localHost:8080" ,value = "Question-Client")
+@FeignClient(name = "QuestionService" )
 public interface QuestionClient {
 
     @GetMapping("/question/byQuizId/{quizId}")
