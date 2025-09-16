@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleInvalidFormat(HttpMessageNotReadableException ex) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> exception(Exception ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof InvalidFormatException) {
             InvalidFormatException ife = (InvalidFormatException) cause;
@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
             }
         }
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Malformed JSON request.");
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Something Went Wrong !!!!");
     }
 
 
