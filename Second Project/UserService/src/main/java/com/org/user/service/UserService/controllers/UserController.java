@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/user")
@@ -33,9 +33,9 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
-        UserDTO saveddetails = service.createUser(details);
-        if (saveddetails != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(saveddetails);
+        UserDTO savedDetails = service.createUser(details);
+        if (savedDetails != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDetails);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Adding New User");
     }
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/byUserId/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<?> getUserById(@PathVariable String id) {
         UserDTO details = service.getUserDetailsById(id);
         try {
             if (details != null) {
@@ -63,32 +63,32 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateDetails")
+    @PatchMapping("/updateDetails")
     public ResponseEntity<?> updateUserDetailsById(@Valid @RequestBody UserDTO updatedDetails, BindingResult result) {
 
-            if (result.hasErrors()) {
-                List<String> errorMessage = new ArrayList<>();
-                for (FieldError errors : result.getFieldErrors()) {
-                    errorMessage.add(errors.getDefaultMessage());
-                }
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        if (result.hasErrors()) {
+            List<String> errorMessage = new ArrayList<>();
+            for (FieldError errors : result.getFieldErrors()) {
+                errorMessage.add(errors.getDefaultMessage());
             }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
 
-            if (updatedDetails.getId() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID must be provided.");
-            }
-            UserDTO finalDetails = service.updateUserDetails(updatedDetails);
-            if (finalDetails != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(finalDetails);
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something Went Wrong");
+        if (updatedDetails.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID must be provided.");
+        }
+        UserDTO finalDetails = service.updateUserDetails(updatedDetails);
+        if (finalDetails != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(finalDetails);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something Went Wrong");
 
-            }
+        }
 
     }
 
     @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity<?> deleteUserDetails(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteUserDetails(@PathVariable String id) {
 
         String result = service.deteleUserDetails(id);
         if (result.equals("true")) {

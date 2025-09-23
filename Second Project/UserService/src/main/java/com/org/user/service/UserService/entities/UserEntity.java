@@ -3,6 +3,7 @@ package com.org.user.service.UserService.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,8 +15,8 @@ import java.util.UUID;
 @Table(name="User_Details")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  //  @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(name="Name")
     private  String name;
     @Column(name="Email")
@@ -24,4 +25,8 @@ public class UserEntity {
     private String password;
     @Column(name="About")
     private String about;
+    @Transient
+    private List<HotelRating> ratingList;
+
+
 }

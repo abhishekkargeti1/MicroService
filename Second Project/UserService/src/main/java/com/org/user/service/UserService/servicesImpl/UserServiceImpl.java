@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity entity = UserMapper.getEntity(details);
         try {
+            entity.setId(UUID.randomUUID().toString());
             UserEntity detailsReceived = repository.save(entity);
             //System.out.println("Details in service "+ detailsReceived);
             UserDTO finalDetails = UserMapper.getDTO(detailsReceived);
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserDetailsById(UUID id) {
+    public UserDTO getUserDetailsById(String id) {
         Optional<UserEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
             UserDTO details = UserMapper.getDTO(entity.get());
@@ -81,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String deteleUserDetails(UUID id) {
+    public String deteleUserDetails(String id) {
         Optional<UserEntity> details = repository.findById(id);
         if(details.isPresent()){
             UserEntity entity = details.get();

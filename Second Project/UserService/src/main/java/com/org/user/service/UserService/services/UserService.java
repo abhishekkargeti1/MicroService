@@ -12,12 +12,12 @@ public interface UserService {
     List<UserDTO> getAllUserDetails();
 
 
-    UserDTO getUserDetailsById(UUID id);
+    UserDTO getUserDetailsById(String id);
 
 
     UserDTO updateUserDetails(UserDTO details);
 
-    String deteleUserDetails(UUID id);
+    String deteleUserDetails(String id);
 
 
 }
