@@ -85,4 +85,6 @@ public class HotelDetailsServiceImpl implements HotelDetailsService {
        }
        throw new RuntimeException("No Details Found");
     }
+
+
 }

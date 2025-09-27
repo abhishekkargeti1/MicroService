@@ -28,5 +28,8 @@ public class UserEntity {
     @Transient
     private List<HotelRating> ratingList;
 
+    @Transient
+    private List<HotelDetails> hotelDetails;
+
 
 }

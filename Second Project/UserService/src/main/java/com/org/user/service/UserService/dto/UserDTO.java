@@ -2,6 +2,7 @@ package com.org.user.service.UserService.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.org.user.service.UserService.entities.HotelDetails;
 import com.org.user.service.UserService.entities.HotelRating;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class UserDTO {
     private String about;
 
     private List<HotelRating> ratingList;
+    private List<HotelDetails> hotelDetails;
 
 
 }

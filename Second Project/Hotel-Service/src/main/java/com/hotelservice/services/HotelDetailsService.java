@@ -6,15 +6,17 @@ import java.util.List;
 
 public interface HotelDetailsService {
 
-     HotelDetailsDTO create(HotelDetailsDTO detailsDTO);
+    HotelDetailsDTO create(HotelDetailsDTO detailsDTO);
 
 
-     HotelDetailsDTO updateDetails(HotelDetailsDTO detailsDTO);
+    HotelDetailsDTO updateDetails(HotelDetailsDTO detailsDTO);
 
 
-     List<HotelDetailsDTO> getHotelList();
+    List<HotelDetailsDTO> getHotelList();
 
-    public HotelDetailsDTO getHotel(String id);
+    HotelDetailsDTO getHotel(String id);
 
-    public String deleteHotel(String id);
+    String deleteHotel(String id);
+
+
 }

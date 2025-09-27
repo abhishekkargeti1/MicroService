@@ -1,6 +1,8 @@
 package com.org.user.service.UserService.servicesImpl;
 
 import com.org.user.service.UserService.dto.UserDTO;
+import com.org.user.service.UserService.entities.HotelDetails;
+import com.org.user.service.UserService.entities.HotelRating;
 import com.org.user.service.UserService.entities.UserEntity;
 import com.org.user.service.UserService.mapper.UserMapper;
 import com.org.user.service.UserService.repositories.UserRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +20,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository repository;
+    private UserRepository repository;
+
+    @Autowired
+    private HotelRatingService hotelRatingService;
+
+    @Autowired
+    private HotelDetailService hotelDetailService;
 
     @Override
     @Transactional
@@ -40,9 +49,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUserDetails() {
+        List<HotelRating> hotelRatings = new ArrayList<>();
         List<UserEntity> userList = repository.findAll();
-        System.out.println("User List " + userList);
         List<UserDTO> finalList = UserMapper.getDTOList(userList);
+        for (UserDTO dto : finalList) {
+            hotelRatings = hotelRatingService.getDetailsByUserId(dto.getId());
+            dto.setRatingList(hotelRatings);
+            List<HotelDetails> hotelDetails = new ArrayList<>();
+            for (HotelRating rating : hotelRatings) {
+                HotelDetails details = hotelDetailService.getHotelDetails(rating.getHotelId());
+                hotelDetails.add(details);
+            }
+            dto.setHotelDetails(hotelDetails);
+        }
+
+
+        System.out.println("User List " + finalList);
         return finalList;
     }
 
@@ -51,6 +73,17 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
             UserDTO details = UserMapper.getDTO(entity.get());
+
+           List<HotelRating> ratings = hotelRatingService.getDetailsByUserId(details.getId());
+            details.setRatingList(ratings);
+            List<HotelDetails> hotelDetailsList = new ArrayList<>();
+            for(HotelRating r : ratings){
+               HotelDetails hotelDetails = hotelDetailService.getHotelDetails(r.getHotelId());
+               hotelDetailsList.add(hotelDetails);
+               details.setHotelDetails(hotelDetailsList);
+            }
+
+
             return details;
         } else {
             throw new RuntimeException("User not found with id: " + id);
@@ -84,11 +117,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String deteleUserDetails(String id) {
         Optional<UserEntity> details = repository.findById(id);
-        if(details.isPresent()){
+        if (details.isPresent()) {
             UserEntity entity = details.get();
             repository.delete(entity);
             return "true";
-        }else{
+        } else {
             return "No Data Found";
         }
 
